@@ -1,3 +1,10 @@
+/*
+ * @author: Julian Anders
+ * Company: AVL DiTEST
+ * Date: 19.02.2018
+ * Version: 0.0.1
+ * Based on JSch Example "ScpTo"*/
+
 package ssh_connect_test;
 /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /**
