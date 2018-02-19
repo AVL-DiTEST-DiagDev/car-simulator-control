@@ -4,7 +4,10 @@
  * Date: 19.02.2018
  * Version: 0.0.1
  * Based on JSch Example "ScpTo"*/
-
+/**
+ * run config with arguments like:
+ * //C:\Users\Your username\Desktop\file.txt pi@raspberryIpHere:~/PathOnRaspberry/
+ */
 package ssh_connect_test;
 /* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
 /**
@@ -24,6 +27,7 @@ import java.io.*;
 public class ScpTo{
   public static void main(String[] arg){
     if(arg.length!=2){
+    	
       System.err.println("usage: java ScpTo file1 user@remotehost:file2");
       System.exit(-1);
     }      
