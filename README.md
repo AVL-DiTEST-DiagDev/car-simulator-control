@@ -1,2 +1,2 @@
 # car-simulator-control
-Tools to remore control the car simulator
+Tools to remote control the car simulator
