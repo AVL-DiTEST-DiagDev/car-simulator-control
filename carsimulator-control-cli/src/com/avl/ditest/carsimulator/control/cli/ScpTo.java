@@ -28,7 +28,7 @@ import javax.swing.*;
 import java.io.*;
 
 public class ScpTo {
-	public static void transfer(String hostname, String path) {
+	public void transfer(String hostname, String path) {
 		if (hostname == null || path == null) {
 
 			System.err.println("usage: java ScpTo pathToFile ");

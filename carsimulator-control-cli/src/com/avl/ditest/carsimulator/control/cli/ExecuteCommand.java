@@ -21,7 +21,7 @@ import java.io.*;
 import com.avl.ditest.carsimulator.control.cli.*;
 
 public class ExecuteCommand {
-	public static void exec(String hostname, String command) {
+	public void exec(String hostname, String command) {
 		try {
 			JSch jsch = new JSch();
 
