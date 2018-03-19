@@ -20,8 +20,9 @@ import javax.swing.*;
 import java.io.*;
 import com.avl.ditest.carsimulator.control.cli.*;
 
+
 public class ExecuteCommand {
-	public void exec(String hostname, String command) {
+	public void exec(String hostname, String command, String argument) {
 		try {
 			JSch jsch = new JSch();
 
@@ -30,6 +31,9 @@ public class ExecuteCommand {
 				execCommand[0] = command;
 			} else {
 				execCommand[0] = JOptionPane.showInputDialog("Enter hostname", "command");
+			}
+			if(argument != null) {
+				execCommand[1] = argument;
 			}
 
 			ConnectionInfo ci = new ConnectionInfo();
@@ -69,12 +73,22 @@ public class ExecuteCommand {
 	}
 
 	private static String[] checkCommand(String[] command) {
+		ConnectionInfo ci = new ConnectionInfo();
+		String filepath = ci.getFilePath();
 		if (command[0].equals("kill")) {
 			command[1] = "sudo pkill amos-ss17-proj4";
 		} else if (command[0].equals("restart")) {
 			command[1] = "cd /home/pi/Desktop/python/ && python startServer.py";
 
-		} else {
+		}else if(command[0].equals("delete")) {
+			if(command[1].equals("all")){
+				command[1] = "cd " + filepath +  "&& rm -R ./*";
+			}else if(command[1] != null ) {
+				String file = command[1];
+				command[1] ="cd " + filepath +  "&& rm " + command[1];
+			}
+		}
+		else {
 			System.out.println("error! Command " + command[0] + " is unknown.... Retry with another command.");
 		}
 

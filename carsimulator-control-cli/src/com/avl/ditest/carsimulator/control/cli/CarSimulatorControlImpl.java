@@ -29,14 +29,24 @@ public class CarSimulatorControlImpl implements ICarSimulatorControl {
 
 	}
 
-	public void execCommand(String hostname, String command) {
-		// arg[0] = IP of the raspberry
-		// arg[1] = kill || restart
-		if (command == "kill" || command == "restart") {
+	public void execCommand(String hostname, String command, String argument) {
+		// hostname = IP of the raspberry
+		// command = kill || restart || delete
+		// argument = null || all || filename
+		if (command.equals("kill") || command.equals("restart")) {
 			ExecuteCommand executer = new ExecuteCommand();
-			executer.exec(hostname, command);
-		} else {
-			System.out.println("API error: please use one of the commands: kill or restart ... ");
+			argument = null;
+			executer.exec(hostname, command, argument);
+		} else if (command.equals("delete")){
+			if(argument != null) {
+				ExecuteCommand executer = new ExecuteCommand();
+				executer.exec(hostname, command, argument);
+			}
+			else {
+				System.out.println("API error: please use a argument. filename or all");
+			}
+		}else {
+			System.out.println("API error: please use one of the commands: kill or restart ... Given: " + command);
 		}
 
 	}

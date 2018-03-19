@@ -36,8 +36,12 @@ public interface ICarSimulatorControl {
 	 * 
 	 * hostname shall be the IP address of the car simulator, which can be found with discoverSimulators().
 	 * valid commands are: "kill" or "restart" - whether you'd like to kill or start the server.
+	 * you can also delete files from the simulator by using "delete"
+	 * "delete" need another argument
+	 * 1) you can use "all" to remove all the files from the current directory
+	 * 2) you can add a filename to delete a special file.
 	 */
-	public void execCommand(String hostname,String command);
+	public void execCommand(String hostname,String command, String argument);
 	
 	public class SimulatorInfo {
 		private InetAddress address;

@@ -26,19 +26,23 @@ public class Main {
 				List<SimulatorInfo> discoveredCarSims = inter.discoverSimulators();
 				System.out.println("--- Discovered CarSimulators ---");
 				for (SimulatorInfo carSim : discoveredCarSims) {
-					System.out.println(carSim);
+					String address = carSim.getAddress().toString();
+					String version = carSim.getMajorVersion()+"."+carSim.getMinorVersion();
+					System.out.println("Address: "+address+ " Version: " + version);
 				}
 				
 			}else if(args[0].equals("execute")) {
-				if(args.length != 3) {
+				if(args.length > 3) {
 					//hostname
 					String hostname = args[1];
 					//command
 					String command = args[2];
-					inter.execCommand(hostname, command);
+					//argument
+					String argument = args[3];
+					inter.execCommand(hostname, command, argument);
 				}else {
-					System.out.print("Wrong argument format! Please use: execute hostname command");
-					System.out.print("For getting the hostname use argument: discover");
+					System.out.println("Wrong argument format! Please use: execute hostname command");
+					System.out.println("For getting the hostname use argument: discover");
 				}
 				
 			}else if(args[0].equals("transfer")) {
@@ -50,12 +54,13 @@ public class Main {
 					String path = args[2];
 					inter.upload(hostname, path);
 					String command = "kill";
-					inter.execCommand(hostname, command);
+					String argument = null;
+					inter.execCommand(hostname, command, argument);
 					command = "restart";
-					inter.execCommand(hostname, command); 
+					inter.execCommand(hostname, command, argument); 
 				}else {
-					System.out.println("Wrong argument format! Please use: transfer hostname path");
-					System.out.println("For getting the hostname use argument: discover");
+					System.out.println("Wrong argument format! Please use: transfer hostname path. ");
+					System.out.println("For getting the hostname use argument: discover.");
 				}
 			}else {
 				System.out.println("Wrong argument format! Please use one of the arguments: discover || execute || transfer");
@@ -64,7 +69,7 @@ public class Main {
 		}
 		else {
 			System.out.println("Wrong argument format! Please use one of the arguments: discover || execute || transfer");
-			System.out.println("Given: " + args);
+			System.out.println("Given: " + args[0]);
 		}
 		
 	}

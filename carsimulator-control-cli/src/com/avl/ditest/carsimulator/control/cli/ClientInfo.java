@@ -3,7 +3,7 @@ package com.avl.ditest.carsimulator.control.cli;
 public interface ClientInfo {
 	String PASSWORD = "raspberry";
 	String USERNAME = "pi";
-	String FILEPATH = "~/Desktop/";
+	String FILEPATH = "~/Desktop/images/";
 }
 
 class ConnectionInfo implements ClientInfo {
@@ -14,9 +14,6 @@ class ConnectionInfo implements ClientInfo {
 		username = USERNAME;
 		return username;
 	}
-}
-
-class UploadInfo implements ClientInfo {
 	private String filepath;
 
 	public String getFilePath() {
@@ -24,3 +21,4 @@ class UploadInfo implements ClientInfo {
 		return filepath;
 	}
 }
+

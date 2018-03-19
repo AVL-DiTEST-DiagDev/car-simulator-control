@@ -23,6 +23,8 @@ package com.avl.ditest.carsimulator.control.cli;
 import com.jcraft.jsch.*;
 
 import com.avl.ditest.carsimulator.control.cli.ClientInfo;
+
+
 import java.awt.*;
 import javax.swing.*;
 import java.io.*;
@@ -46,7 +48,6 @@ public class ScpTo {
 				JSch jsch = new JSch();
 
 				ConnectionInfo ci = new ConnectionInfo();
-				UploadInfo upli = new UploadInfo();
 				Session session = jsch.getSession(ci.getUsername(), hostname, 22);
 
 				// username and password will be given via UserInfo interface.
@@ -57,7 +58,7 @@ public class ScpTo {
 				boolean ptimestamp = true;
 
 				// exec 'scp -t rfile' remotely
-				String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + upli.getFilePath();
+				String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + ci.getFilePath();
 				Channel channel = session.openChannel("exec");
 				((ChannelExec) channel).setCommand(command);
 
