@@ -17,37 +17,28 @@ public class CarSimulatorControlImpl implements ICarSimulatorControl {
 		return discoveredCarSims;
 	}
 
-	public void upload(String hostname,String path) {
+	public void upload(String hostname, String path) {
 		// arg[0] = IP of the raspberry
 		// arg[1] = filePath (C:\Users\)
 		if (hostname != null && path != null) {
 			ScpTo transferer = new ScpTo();
 			transferer.transfer(hostname, path);
 		} else {
-			System.out.println("API error: please use set the filepath as argument ... ");
+			System.out.println("API error: please set the hostname and filepath as argument ... ");
 		}
 
 	}
 
 	public void execCommand(String hostname, String command, String argument) {
 		// hostname = IP of the raspberry
-		// command = kill || restart || delete
+		// command = kill || restart || restart || delete
 		// argument = null || all || filename
-		if (command.equals("kill") || command.equals("restart")) {
-			ExecuteCommand executer = new ExecuteCommand();
-			argument = null;
-			executer.exec(hostname, command, argument);
-		} else if (command.equals("delete")){
-			if(argument != null) {
-				ExecuteCommand executer = new ExecuteCommand();
-				executer.exec(hostname, command, argument);
-			}
-			else {
-				System.out.println("API error: please use a argument. filename or all");
-			}
-		}else {
-			System.out.println("API error: please use one of the commands: kill or restart ... Given: " + command);
-		}
+		
+		CommandGenerator comgen = new CommandGenerator();
+		ExecuteCommand executer = new ExecuteCommand();
+		
+		String generatedCommand = comgen.generateCommand(command, argument);
+		executer.exec(hostname, generatedCommand);
 
 	}
 }

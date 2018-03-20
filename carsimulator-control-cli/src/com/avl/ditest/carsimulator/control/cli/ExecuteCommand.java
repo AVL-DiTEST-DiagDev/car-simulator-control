@@ -17,29 +17,20 @@ package com.avl.ditest.carsimulator.control.cli;
 import com.jcraft.jsch.*;
 import java.awt.*;
 import javax.swing.*;
-import java.io.*;
-import com.avl.ditest.carsimulator.control.cli.*;
-
 
 public class ExecuteCommand {
-	public void exec(String hostname, String command, String argument) {
+	public void exec(String hostname, String command) {
 		try {
 			JSch jsch = new JSch();
-
-			String execCommand[] = new String[2];
+			String execCommand;
 			if (command != null || hostname != null) {
-				execCommand[0] = command;
+				execCommand = command;
 			} else {
-				execCommand[0] = JOptionPane.showInputDialog("Enter hostname", "command");
-			}
-			if(argument != null) {
-				execCommand[1] = argument;
+				execCommand = JOptionPane.showInputDialog("Enter hostname", "command");
 			}
 
 			ConnectionInfo ci = new ConnectionInfo();
 			Session session = jsch.getSession(ci.getUsername(), hostname, 22);
-			// checks if command is valid and return the correct terminal line
-			checkCommand(execCommand);
 
 			// username and password will be given via UserInfo interface.
 			UserInfo ui = new MyUserInfo();
@@ -47,53 +38,18 @@ public class ExecuteCommand {
 			session.connect();
 
 			Channel channel = session.openChannel("exec");
-			((ChannelExec) channel).setCommand(execCommand[1]);
-
-			// channel.setInputStream(null);
+			((ChannelExec) channel).setCommand(execCommand);
 
 			((ChannelExec) channel).setErrStream(System.err);
 
-			// InputStream in=channel.getInputStream();
-
 			channel.connect();
 			JOptionPane successDialog = new JOptionPane();
-			successDialog.showMessageDialog(null, "Done", "Success", JOptionPane.INFORMATION_MESSAGE);
-			/*
-			 * byte[] tmp=new byte[1024]; while(true){ while(in.available()>0){ int
-			 * i=in.read(tmp, 0, 1024); if(i<0)break; System.out.print(new String(tmp, 0,
-			 * i)); } if(channel.isClosed()){ if(in.available()>0) continue;
-			 * System.out.println("exit-status: "+channel.getExitStatus()); break; }
-			 * try{Thread.sleep(1000);}catch(Exception ee){} }
-			 */
+			
 			channel.disconnect();
 			session.disconnect();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-	}
-
-	private static String[] checkCommand(String[] command) {
-		ConnectionInfo ci = new ConnectionInfo();
-		String filepath = ci.getFilePath();
-		if (command[0].equals("kill")) {
-			command[1] = "sudo pkill amos-ss17-proj4";
-		} else if (command[0].equals("restart")) {
-			command[1] = "cd /home/pi/Desktop/python/ && python startServer.py";
-
-		}else if(command[0].equals("delete")) {
-			if(command[1].equals("all")){
-				command[1] = "cd " + filepath +  "&& rm -R ./*";
-			}else if(command[1] != null ) {
-				String file = command[1];
-				command[1] ="cd " + filepath +  "&& rm " + command[1];
-			}
-		}
-		else {
-			System.out.println("error! Command " + command[0] + " is unknown.... Retry with another command.");
-		}
-
-		return command;
-
 	}
 
 	public static class MyUserInfo implements UserInfo, UIKeyboardInteractive, ClientInfo {

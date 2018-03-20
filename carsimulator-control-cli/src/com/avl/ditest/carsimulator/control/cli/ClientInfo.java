@@ -3,7 +3,7 @@ package com.avl.ditest.carsimulator.control.cli;
 public interface ClientInfo {
 	String PASSWORD = "raspberry";
 	String USERNAME = "pi";
-	String FILEPATH = "~/Desktop/images/";
+	String FILEPATH = "~/Desktop/images";
 }
 
 class ConnectionInfo implements ClientInfo {

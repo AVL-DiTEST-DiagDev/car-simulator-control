@@ -91,7 +91,10 @@ public class ScpTo {
 				command = "C0644 " + filesize + " ";
 				if (lfile.lastIndexOf('/') > 0) {
 					command += lfile.substring(lfile.lastIndexOf('/') + 1);
-				} else {
+				}else if(lfile.lastIndexOf('\\') > 0) {
+					command += lfile.substring(lfile.lastIndexOf('\\')+1);
+				}
+				else {
 					command += lfile;
 				}
 				command += "\n";
@@ -100,7 +103,6 @@ public class ScpTo {
 				if (checkAck(in) != 0) {
 					System.exit(0);
 				}
-
 				// send a content of lfile
 				fis = new FileInputStream(lfile);
 				byte[] buf = new byte[1024];
@@ -119,16 +121,11 @@ public class ScpTo {
 				if (checkAck(in) != 0) {
 					System.exit(0);
 				}
-				// if everything worked fine success
-				System.out.println("File transfer completed!");
-				JOptionPane successDialog = new JOptionPane();
-				successDialog.showMessageDialog(null, "It worked!", "Success", JOptionPane.INFORMATION_MESSAGE);
 				out.close();
 
-				// channel.disconnect();
-				// session.disconnect();
+				channel.disconnect();
+				session.disconnect();
 
-				// System.exit(0);
 
 			} else {
 				// if file doesn't exist

@@ -23,13 +23,19 @@ public class Main {
 		CarSimulatorControlImpl inter = new CarSimulatorControlImpl();
 		if(args.length != 0) {
 			if(args[0].equals("discover")) {
-				List<SimulatorInfo> discoveredCarSims = inter.discoverSimulators();
-				System.out.println("--- Discovered CarSimulators ---");
-				for (SimulatorInfo carSim : discoveredCarSims) {
-					String address = carSim.getAddress().toString();
-					String version = carSim.getMajorVersion()+"."+carSim.getMinorVersion();
-					System.out.println("Address: "+address+ " Version: " + version);
+				try {
+					List<SimulatorInfo> discoveredCarSims = inter.discoverSimulators();
+					System.out.println("--- Discovered CarSimulators ---");
+					for (SimulatorInfo carSim : discoveredCarSims) {
+						String address = carSim.getAddress().toString();
+						String version = carSim.getMajorVersion()+"."+carSim.getMinorVersion();
+						System.out.println("Address: "+address+ " Version: " + version);
+					}	
 				}
+				catch(Exception e) {
+					System.out.print("An error occured while discovering...  error: "+ e);
+				}
+				
 				
 			}else if(args[0].equals("execute")) {
 				if(args.length > 3) {
@@ -39,7 +45,14 @@ public class Main {
 					String command = args[2];
 					//argument
 					String argument = args[3];
-					inter.execCommand(hostname, command, argument);
+					try {
+						inter.execCommand(hostname, command, argument);
+						System.out.println("Command successfully executed.");
+					}
+					catch(Exception e) {
+						System.out.println("An error occured while executing your command.. error: " + e);
+					}
+					
 				}else {
 					System.out.println("Wrong argument format! Please use: execute hostname command");
 					System.out.println("For getting the hostname use argument: discover");
@@ -52,12 +65,22 @@ public class Main {
 					String hostname = args[1];
 					//path
 					String path = args[2];
-					inter.upload(hostname, path);
-					String command = "kill";
-					String argument = null;
-					inter.execCommand(hostname, command, argument);
-					command = "restart";
-					inter.execCommand(hostname, command, argument); 
+					try {
+						inter.upload(hostname, path);
+						System.out.println("File successfully transfered!");
+					}
+					catch(Exception e) {
+						System.out.println("An error occured while transfering your file.. error: " + e);
+					}
+					
+					String command = "restart";
+					try {
+						inter.execCommand(hostname, command, null); 
+						System.out.println("Server successfully restarted!");
+					}
+					catch(Exception e) {
+						System.out.println("An error occured while restarting the server.. error: " + e);
+					}
 				}else {
 					System.out.println("Wrong argument format! Please use: transfer hostname path. ");
 					System.out.println("For getting the hostname use argument: discover.");
