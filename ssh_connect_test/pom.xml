@@ -8,8 +8,8 @@
 	</parent>
 	<artifactId>car-sim-ssh-connect-test</artifactId>
 	<packaging>jar</packaging>
-	<name>carsimulator control ui</name>
-	<description>carsimulator control user interface</description>
+	<name>carsimulator control ssh tests</name>
+	<description>carsimulator control ssh tests</description>
 	<repositories>
 		<repository>
 			<snapshots>

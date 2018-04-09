@@ -81,6 +81,11 @@
 				<artifactId>carsimulator-control-gui</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+				<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>car-sim-ssh-connect-test</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!--
 			<dependency><groupId>${project.groupId}</groupId><artifactId>computer-side_java</artifactId><version>${project.version}</version></dependency><dependency><groupId>${project.groupId}</groupId><artifactId>ssh_connect_test</artifactId><version>${project.version}</version><scope>test</scope></dependency>-->
 			<!-- Dependencies -->
@@ -276,6 +281,6 @@
 	<modules>
 		<module>carsimulator-control-cli</module>
 		<module>carsimulator-control-gui</module>
-		<module>car-sim-ssh-connect-test</module>
+		<module>ssh_connect_test</module>
 	</modules>
 </project>
