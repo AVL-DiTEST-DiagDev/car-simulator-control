@@ -211,11 +211,6 @@
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>0.7.8</version>
-					<configuration>
-						<excludes>
-							<exclude>**/*com/avl/ditest/dicore/diflow/ecud/pkw/**/*</exclude>
-						</excludes>
-					</configuration>
 					<executions>
 						<execution>
 							<id>default-prepare-agent</id>
