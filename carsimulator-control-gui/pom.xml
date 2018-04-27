@@ -92,7 +92,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.avl.ditest.carsimulator.control.gui.Main</mainClass>
+							<mainClass>com.avl.ditest.carsimulator.control.cli.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
