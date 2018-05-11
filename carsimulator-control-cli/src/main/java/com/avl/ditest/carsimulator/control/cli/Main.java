@@ -38,13 +38,17 @@ public class Main {
 				
 				
 			}else if(args[0].equals("execute")) {
-				if(args.length > 3) {
+				if(args.length > 2) {
 					//hostname
 					String hostname = args[1];
 					//command
 					String command = args[2];
 					//argument
-					String argument = args[3];
+					String argument = "";
+					if (args.length > 3) {
+						argument = args[3];
+					}
+						
 					try {
 						inter.execCommand(hostname, command, argument);
 						System.out.println("Command successfully executed.");
@@ -87,12 +91,10 @@ public class Main {
 				}
 			}else {
 				System.out.println("Wrong argument format! Please use one of the arguments: discover || execute || transfer");
-				System.out.println("Given: " + args[0]);
 			}
 		}
 		else {
 			System.out.println("Wrong argument format! Please use one of the arguments: discover || execute || transfer");
-			System.out.println("Given: " + args[0]);
 		}
 		
 	}
