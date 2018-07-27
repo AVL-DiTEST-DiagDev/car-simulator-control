@@ -10,38 +10,6 @@
 	<packaging>jar</packaging>
 	<name>carsimulator control ssh tests</name>
 	<description>carsimulator control ssh tests</description>
-	<repositories>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>central</id>
-			<name>libs-release</name>
-			<url>http://jenkins:10000/artifactory/libs-release</url>
-		</repository>
-		<repository>
-			<snapshots/>
-			<id>snapshots</id>
-			<name>libs-snapshot</name>
-			<url>http://jenkins:10000/artifactory/libs-snapshot</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>snapshot2</id>
-			<name>libs-release-local</name>
-			<url>http://jenkins:10000/artifactory/libs-release-local</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<id>central2</id>
-			<name>libs-release-local</name>
-			<url>http://jenkins:10000/artifactory/libs-release-local</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>com.avl.ditest</groupId>
@@ -144,24 +112,4 @@
 		</plugins>
 	</build>
 	<profiles/>
-	<pluginRepositories>
-		<pluginRepository>
-			<snapshots>
-				<enabled>false</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<id>central</id>
-			<name>libs-release</name>
-			<url>http://jenkins:10000/artifactory/libs-release</url>
-		</pluginRepository>
-		<pluginRepository>
-			<snapshots>
-				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<id>snapshots</id>
-			<name>libs-snapshot</name>
-			<url>http://jenkins:10000/artifactory/libs-snapshot</url>
-		</pluginRepository>
-	</pluginRepositories>
 </project>
