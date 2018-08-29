@@ -3,7 +3,7 @@ package com.avl.ditest.carsimulator.control.cli;
 public interface ClientInfo {
 	String PASSWORD = "raspberry";
 	String USERNAME = "pi";
-	String FILEPATH = "~/Desktop/car-simulator/car-simulator/dist/Debug/GNU-Linux/lua_config";
+	String FILEPATH = "~/Desktop/carsim/dist/Debug/GNU-Linux/lua_config";
 }
 
 class ConnectionInfo implements ClientInfo {
