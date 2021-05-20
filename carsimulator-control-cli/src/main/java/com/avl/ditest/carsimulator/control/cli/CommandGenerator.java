@@ -6,11 +6,11 @@ public class CommandGenerator {
 		String generatedCommand = null;
 		String filepath = info.getFilePath();
 		if (command.equals("kill")) {
-			generatedCommand = "sudo pkill amos-ss17-proj4";
+			generatedCommand = "sudo systemctl stop carsimulator@can0; sudo systemctl stop carsimulator@can1";
 		}else if(command.equals("start")) {
-			generatedCommand = "cd /home/pi/Desktop/python/ && python startServer.py";
+			generatedCommand = "sudo systemctl start carsimulator@can0; sudo systemctl start carsimulator@can1";
 		}else if(command.equals("restart")) {
-			generatedCommand = "sudo pkill amos-ss17-proj4 && cd /home/pi/Desktop/python/ && python startServer.py";
+			generatedCommand = "sudo systemctl restart carsimulator@can0; sudo systemctl restart carsimulator@can1";
 		}else if (command.equals("delete")){
 			if(argument != null) {
 				if(argument.equals("all")) {
