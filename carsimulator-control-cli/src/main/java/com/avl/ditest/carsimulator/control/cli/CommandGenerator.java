@@ -22,8 +22,10 @@ public class CommandGenerator {
 			else {
 				System.out.println("API error: please use an argument. filename or all");
 			}
+		}else if (command.equals("list")) {
+			generatedCommand = "cd " + filepath + "&& ls >&2";
 		}else {
-			System.out.println("API error: please use one of the commands: kill, start, restart or delete ... Given: " + command);
+			System.out.println("API error: please use one of the commands: kill, start, restart, list or delete ... Given: " + command);
 		}
 		return generatedCommand;
 	}
