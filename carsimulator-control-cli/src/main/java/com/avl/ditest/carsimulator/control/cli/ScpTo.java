@@ -10,27 +10,31 @@
  */
 package com.avl.ditest.carsimulator.control.cli;
 
-/* -*-mode:java; c-basic-offset:2; indent-tabs-mode:nil -*- */
-/**
- * This program will demonstrate the file transfer from local to remote.
- *   $ CLASSPATH=.:../build javac ScpTo.java
- *   $ CLASSPATH=.:../build java ScpTo pathToFile 
- * If everything works fine, a local file 'pathToFile' will copied to
- * to the destination defined in ClientInfo on 'remotehost'.
- * Check ClientInfo for the connection parameters
- */
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import com.jcraft.jsch.*;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
-import com.avl.ditest.carsimulator.control.cli.ClientInfo;
-
-
-import java.awt.*;
-import javax.swing.*;
-import java.io.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+import com.jcraft.jsch.UIKeyboardInteractive;
+import com.jcraft.jsch.UserInfo;
 
 public class ScpTo {
-	public void transfer(String hostname, String path) {
+	public void transfer(final String hostname, final String path) {
 		if (hostname == null || path == null) {
 
 			System.err.println("usage: java ScpTo pathToFile ");
@@ -41,30 +45,30 @@ public class ScpTo {
 
 		try {
 
-			String lfile = path;
-			boolean exi = checkExists(lfile);
+			final String lfile = path;
+			final boolean exi = checkExists(lfile);
 			if (exi == true) {
 
-				JSch jsch = new JSch();
+				final JSch jsch = new JSch();
 
-				ConnectionInfo ci = new ConnectionInfo();
-				Session session = jsch.getSession(ci.getUsername(), hostname, 22);
+				final ConnectionInfo ci = new ConnectionInfo();
+				final Session session = jsch.getSession(ci.getUsername(), hostname, 22);
 
 				// username and password will be given via UserInfo interface.
-				UserInfo ui = new MyUserInfo();
+				final UserInfo ui = new MyUserInfo();
 				session.setUserInfo(ui);
 				session.connect();
 
-				boolean ptimestamp = true;
+				final boolean ptimestamp = true;
 
 				// exec 'scp -t rfile' remotely
 				String command = "scp " + (ptimestamp ? "-p" : "") + " -t " + ci.getFilePath();
-				Channel channel = session.openChannel("exec");
+				final Channel channel = session.openChannel("exec");
 				((ChannelExec) channel).setCommand(command);
 
 				// get I/O streams for remote scp
-				OutputStream out = channel.getOutputStream();
-				InputStream in = channel.getInputStream();
+				final OutputStream out = channel.getOutputStream();
+				final InputStream in = channel.getInputStream();
 
 				channel.connect();
 
@@ -72,13 +76,13 @@ public class ScpTo {
 					System.exit(0);
 				}
 
-				File _lfile = new File(lfile);
+				final File _lfile = new File(lfile);
 
 				if (ptimestamp) {
-					command = "T" + (_lfile.lastModified() / 1000) + " 0";
+					command = "T" + _lfile.lastModified() / 1000 + " 0";
 					// The access time should be sent hee,
 					// but it is not accessible with JavaAPI ;-<
-					command += (" " + (_lfile.lastModified() / 1000) + " 0\n");
+					command += " " + _lfile.lastModified() / 1000 + " 0\n";
 					out.write(command.getBytes());
 					out.flush();
 					if (checkAck(in) != 0) {
@@ -87,14 +91,13 @@ public class ScpTo {
 				}
 
 				// send "C0644 filesize filename", where filename should not include '/'
-				long filesize = _lfile.length();
+				final long filesize = _lfile.length();
 				command = "C0644 " + filesize + " ";
 				if (lfile.lastIndexOf('/') > 0) {
 					command += lfile.substring(lfile.lastIndexOf('/') + 1);
-				}else if(lfile.lastIndexOf('\\') > 0) {
-					command += lfile.substring(lfile.lastIndexOf('\\')+1);
-				}
-				else {
+				} else if (lfile.lastIndexOf('\\') > 0) {
+					command += lfile.substring(lfile.lastIndexOf('\\') + 1);
+				} else {
 					command += lfile;
 				}
 				command += "\n";
@@ -105,11 +108,12 @@ public class ScpTo {
 				}
 				// send a content of lfile
 				fis = new FileInputStream(lfile);
-				byte[] buf = new byte[1024];
+				final byte[] buf = new byte[1024];
 				while (true) {
-					int len = fis.read(buf, 0, buf.length);
-					if (len <= 0)
+					final int len = fis.read(buf, 0, buf.length);
+					if (len <= 0) {
 						break;
+					}
 					out.write(buf, 0, len); // out.flush();
 				}
 				fis.close();
@@ -126,36 +130,38 @@ public class ScpTo {
 				channel.disconnect();
 				session.disconnect();
 
-
 			} else {
 				// if file doesn't exist
 				System.out.println("The file you wanted to transfer does not exist. Please double check the path.");
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// Error code goes here..
 			System.out.println(e);
 			try {
-				if (fis != null)
+				if (fis != null) {
 					fis.close();
-			} catch (Exception ee) {
+				}
+			} catch (final Exception ee) {
 			}
 		}
 
 	}
 
-	static int checkAck(InputStream in) throws IOException {
-		int b = in.read();
+	static int checkAck(final InputStream in) throws IOException {
+		final int b = in.read();
 		// b may be 0 for success,
 		// 1 for error,
 		// 2 for fatal error,
 		// -1
-		if (b == 0)
+		if (b == 0) {
 			return b;
-		if (b == -1)
+		}
+		if (b == -1) {
 			return b;
+		}
 
 		if (b == 1 || b == 2) {
-			StringBuffer sb = new StringBuffer();
+			final StringBuffer sb = new StringBuffer();
 			int c;
 			do {
 				c = in.read();
@@ -172,46 +178,53 @@ public class ScpTo {
 	}
 
 	// checks if the file given in the argument exists and return bool
-	public static boolean checkExists(String directory) {
-		boolean check = new File(directory).exists();
+	public static boolean checkExists(final String directory) {
+		final boolean check = new File(directory).exists();
 		return check;
 	}
 
 	public static class MyUserInfo implements UserInfo, UIKeyboardInteractive, ClientInfo {
 		private String password;
 
+		@Override
 		public String getPassword() {
 			password = PASSWORD;
 			return password;
 		}
 
-		public boolean promptYesNo(String str) {
-			int foo = 0;
+		@Override
+		public boolean promptYesNo(final String str) {
+			final int foo = 0;
 			return foo == 0;
 		}
 
+		@Override
 		public String getPassphrase() {
 			return null;
 		}
 
-		public boolean promptPassphrase(String message) {
+		@Override
+		public boolean promptPassphrase(final String message) {
 			return true;
 		}
 
-		public boolean promptPassword(String message) {
+		@Override
+		public boolean promptPassword(final String message) {
 			return true;
 		}
 
-		public void showMessage(String message) {
+		@Override
+		public void showMessage(final String message) {
 			JOptionPane.showMessageDialog(null, message);
 		}
 
-		final GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTHWEST,
-				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0);
+		final GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0),
+				0, 0);
 		private Container panel;
 
-		public String[] promptKeyboardInteractive(String destination, String name, String instruction, String[] prompt,
-				boolean[] echo) {
+		@Override
+		public String[] promptKeyboardInteractive(final String destination, final String name, final String instruction, final String[] prompt,
+				final boolean[] echo) {
 			panel = new JPanel();
 			panel.setLayout(new GridBagLayout());
 
@@ -223,7 +236,7 @@ public class ScpTo {
 
 			gbc.gridwidth = GridBagConstraints.RELATIVE;
 
-			JTextField[] texts = new JTextField[prompt.length];
+			final JTextField[] texts = new JTextField[prompt.length];
 			for (int i = 0; i < prompt.length; i++) {
 				gbc.fill = GridBagConstraints.NONE;
 				gbc.gridx = 0;
@@ -244,7 +257,7 @@ public class ScpTo {
 
 			if (JOptionPane.showConfirmDialog(null, panel, destination + ": " + name, JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
-				String[] response = new String[prompt.length];
+				final String[] response = new String[prompt.length];
 				for (int i = 0; i < prompt.length; i++) {
 					response[i] = texts[i].getText();
 				}
